@@ -1,0 +1,8 @@
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: cloudflare-token
+  namespace: cert-manager
+spec:
+  encryptedData:
+    api-token: AgBy3i4OJSWK+PiTySYZZA9rO43cGDEq...
