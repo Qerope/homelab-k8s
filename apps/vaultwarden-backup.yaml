@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: vaultwarden-backup
+spec:
+  schedule: "0 3 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: backup
+              image: alpine:3.14
+              command: ["sh", "-c", "tar czf /backup/vw-$(date +%F).tgz -C /data . && find /backup -mtime +14 -delete"]
+              volumeMounts:
+                - {name: data, mountPath: /data, readOnly: true}
+                - {name: backup, mountPath: /backup}
+          volumes:
+            - name: data
+              persistentVolumeClaim: {claimName: vaultwarden-data}
+            - name: backup
+              nfs: {server: 192.168.1.5, path: /volume1/backups/vaultwarden}
