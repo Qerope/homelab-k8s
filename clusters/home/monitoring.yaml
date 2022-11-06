@@ -21,3 +21,13 @@ spec:
         tls:
           - secretName: grafana-tls
             hosts: [grafana.home.example.com]
+    additionalPrometheusRulesMap:
+      node-alerts:
+        groups:
+          - name: nodes
+            rules:
+              - alert: NodeNotReady
+                expr: kube_node_status_condition{condition="Ready",status="true"} == 0
+                for: 10m
+                labels:
+                  severity: warning
