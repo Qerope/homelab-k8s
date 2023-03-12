@@ -9,3 +9,4 @@ case "$1" in
     curl -sfL https://get.k3s.io | K3S_URL="https://$2:6443" K3S_TOKEN="$3" sh -
     ;;
 esac
+# tested up to k3s v1.26
